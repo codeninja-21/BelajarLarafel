@@ -19,6 +19,7 @@ class adminFactory extends Factory
     {
         return [
             'username' => $this->faker->unique()->userName,
+            'nama' => $this->faker->name,
             'password' => Hash::make('123'),
             'role' => 'siswa'
         ];
@@ -28,6 +29,7 @@ class adminFactory extends Factory
     {
         return $this->state([
             'username' => 'admin',
+            'nama' => 'Administrator',
             'password' => Hash::make('admin'),
             'role' => 'admin',
         ]);
@@ -36,6 +38,7 @@ class adminFactory extends Factory
     {
         return $this->state([
             'username' => 'guru',
+            'nama' => 'Guru User',
             'password' => Hash::make('guru'),
             'role' => 'guru',
         ]);

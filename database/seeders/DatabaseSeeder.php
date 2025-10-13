@@ -16,17 +16,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Panggil factory dengan nama model yang benar
-        // Admin::factory()->create();
+        // Admin
         admin::factory()->dataadmin1()->create();
         admin::factory()->dataadmin2()->create();
-        siswa::factory()->count(5)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-        siswa::factory()->count(15)->create();
-        guru::factory()->count(5)->create();
+        // Guru dan Siswa
+        $gurus = guru::factory(5)->create();
+        $siswas = siswa::factory(25)->create();
+
+        // Pilih 3 guru random untuk jadi walas
+        $guruRandom = $gurus->random(3);
+        foreach ($guruRandom as $guru) {
+            \App\Models\Walas::factory()->create([
+                'idguru' => $guru->idguru
+            ]);
+        }
+
+        // Ambil semua walas
+        $waliKelasIds = \App\Models\Walas::pluck('idwalas')->toArray();
+
+        // Acak siswa
+        $randomSiswas = $siswas->shuffle();
+
+        // Bagi siswa ke kelompok sesuai jumlah walas
+        $chunks = $randomSiswas->chunk(ceil($randomSiswas->count() / count($waliKelasIds)));
+        foreach ($waliKelasIds as $index => $idwalas) {
+            if (isset($chunks[$index])) {
+                foreach ($chunks[$index] as $siswa) {
+                    \App\Models\Kelas::create([
+                        'idwalas' => $idwalas,
+                        'idsiswa' => $siswa->idsiswa
+                    ]);
+                }
+            }
+        }
     }
 }
