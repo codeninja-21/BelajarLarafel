@@ -13,12 +13,9 @@
         <h3>Anda adalah Wali Kelas</h3>
         <p><strong>Kelas:</strong> {{ $userData->walas->jenjang }} {{ $userData->walas->namakelas }}</p>
         <p><strong>Tahun Ajaran:</strong> {{ $userData->walas->tahunajaran }}</p>
-        <h4>Daftar Siswa Walas:</h4>
-        <ul>
-            @foreach($userData->walas->kelas as $kelas)
-                <li>{{ $kelas->siswa->nama ?? '-' }}</li>
-            @endforeach
-        </ul>
+    @else
+        <h3>Anda bukan Wali Kelas</h3>
+        <p>Anda tidak memiliki akses ke data siswa.</p>
     @endif
 @elseif($userRole === 'siswa' && $userData)
     <h2>Halo, siswa {{ $username }}</h2>
@@ -38,6 +35,8 @@
 @endif
 
 <a href="{{ route('logout') }}">Logout</a>
+
+@if (session('admin_role') === 'admin' || (session('admin_role') === 'guru' && isset($isWalas) && $isWalas))
 <h2>Daftar Siswa</h2>
 @if (session('admin_role') === 'admin')
 
@@ -78,5 +77,6 @@ ingin menghapus?')">Hapus</a>
 @endforeach
 </tbody>
 </table>
+@endif
 </body>
 </html>

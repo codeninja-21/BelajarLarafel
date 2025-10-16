@@ -17,6 +17,13 @@ class Kelas extends Model
     protected $table = 'datakelas';
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idkelas';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -28,11 +35,11 @@ class Kelas extends Model
 
     public function walas()
     {
-        return $this->belongsTo(Walas::class, 'idwalas');
+        return $this->belongsTo(Walas::class, 'idwalas', 'idwalas');
     }
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'idsiswa');
+        return $this->belongsTo(Siswa::class, 'idsiswa', 'idsiswa');
     }
 }

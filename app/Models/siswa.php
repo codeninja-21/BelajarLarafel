@@ -19,6 +19,10 @@ class siswa extends Model
     protected $primaryKey = 'idsiswa';
 
     public function admin() {
-        return $this->belongsTo(admin::class, 'id');
+        return $this->belongsTo(admin::class, 'id', 'id');
+    }
+    
+    public function kelas() {
+        return $this->hasMany(Kelas::class, 'idsiswa', 'idsiswa');
     }
 }

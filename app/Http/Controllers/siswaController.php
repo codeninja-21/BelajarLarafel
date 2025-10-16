@@ -15,20 +15,34 @@ class siswaController extends Controller
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $siswa = siswa::all();
         $userRole = session('admin_role');
         $adminId = session('admin_id');
         $username = session('admin_username');
         
         $userData = null;
+        $siswa = collect(); // Initialize as empty collection
+        $isWalas = false;
         
         if ($userRole === 'guru') {
-            $userData = guru::where('id', $adminId)->first();
+            $userData = guru::with('walas.kelas.siswa')->where('id', $adminId)->first();
+            
+            // Check if this teacher is a walas
+            if ($userData && $userData->walas) {
+                $isWalas = true;
+                // Only show students from this walas's class
+                $siswa = siswa::whereHas('kelas', function($query) use ($userData) {
+                    $query->where('idwalas', $userData->walas->idwalas);
+                })->get();
+            }
+            // If not walas, siswa remains empty collection
         } elseif ($userRole === 'siswa') {
             $userData = siswa::where('id', $adminId)->first();
+        } elseif ($userRole === 'admin') {
+            // Admin can see all students
+            $siswa = siswa::all();
         }
         
-        return view('home', compact('siswa', 'userRole', 'username', 'userData'));
+        return view('home', compact('siswa', 'userRole', 'username', 'userData', 'isWalas'));
     }
 
     public function create()
@@ -36,6 +50,12 @@ class siswaController extends Controller
         if (!session()->has('admin_id')) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
+        
+        // Only admin can create students
+        if (session('admin_role') !== 'admin') {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menambah siswa.');
+        }
+        
         return view('siswa.create');
     }
 
@@ -43,6 +63,11 @@ class siswaController extends Controller
     {
         if (!session()->has('admin_id')) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        
+        // Only admin can store students
+        if (session('admin_role') !== 'admin') {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menambah siswa.');
         }
         
         $request->validate([
@@ -60,6 +85,12 @@ class siswaController extends Controller
         if (!session()->has('admin_id')) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
+        
+        // Only admin can edit students
+        if (session('admin_role') !== 'admin') {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk mengedit siswa.');
+        }
+        
         $siswa = siswa::findOrFail($id);
         return view('siswa.edit', compact('siswa'));
     }
@@ -68,6 +99,11 @@ class siswaController extends Controller
     {
         if (!session()->has('admin_id')) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        
+        // Only admin can update students
+        if (session('admin_role') !== 'admin') {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk mengupdate siswa.');
         }
         
         $request->validate([
@@ -86,6 +122,12 @@ class siswaController extends Controller
         if (!session()->has('admin_id')) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
+        
+        // Only admin can delete students
+        if (session('admin_role') !== 'admin') {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menghapus siswa.');
+        }
+        
         $siswa = siswa::findOrFail($id);
         $siswa->delete();
         return redirect()->route('home')->with('success', 'Data siswa berhasil dihapus.');
