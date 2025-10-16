@@ -34,7 +34,18 @@
     <h2>Halo, Admin</h2>
 @endif
 
-<a href="{{ route('logout') }}">Logout</a>
+<div style="margin: 20px 0;">
+    <a href="{{ route('kbm.index') }}">
+        <button style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            📅 Lihat Jadwal KBM
+        </button>
+    </a>
+    <a href="{{ route('logout') }}">
+        <button style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Logout
+        </button>
+    </a>
+</div>
 
 @if (session('admin_role') === 'admin' || (session('admin_role') === 'guru' && isset($isWalas) && $isWalas))
 <h2>Daftar Siswa</h2>

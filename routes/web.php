@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController; // Tambahkan baris ini
 use App\Http\Controllers\siswaController; // Tambahkan baris ini
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\kbmController;
 
 
 
@@ -36,3 +37,6 @@ Route::post('/articles', [ArticleController::class, 'store'])->name('articles.st
 Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
 Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
 Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+
+// KBM routes - role-based access
+Route::get('/kbm', [kbmController::class, 'index'])->name('kbm.index');

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\admin;
 use App\Models\siswa;
 use App\Models\guru;
+use App\Models\kbm;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -50,5 +51,8 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+        // KBM
+        kbm::factory(5)->create();
     }
 }

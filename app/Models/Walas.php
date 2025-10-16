@@ -44,4 +44,9 @@ class Walas extends Model
     {
         return $this->hasMany(Kelas::class, 'idwalas', 'idwalas');
     }
+
+    public function kbm()
+    {
+        return $this->hasMany(kbm::class, 'idwalas', 'idwalas');
+    }
 }
