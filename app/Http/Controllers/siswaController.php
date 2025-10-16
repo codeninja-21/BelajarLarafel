@@ -11,10 +11,6 @@ class siswaController extends Controller
 {
     public function home()
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-
         $userRole = session('admin_role');
         $adminId = session('admin_id');
         $username = session('admin_username');
@@ -47,10 +43,6 @@ class siswaController extends Controller
 
     public function create()
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-        
         // Only admin can create students
         if (session('admin_role') !== 'admin') {
             return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menambah siswa.');
@@ -61,10 +53,6 @@ class siswaController extends Controller
 
     public function store(Request $request)
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-        
         // Only admin can store students
         if (session('admin_role') !== 'admin') {
             return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menambah siswa.');
@@ -82,10 +70,6 @@ class siswaController extends Controller
 
     public function edit($id)
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-        
         // Only admin can edit students
         if (session('admin_role') !== 'admin') {
             return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk mengedit siswa.');
@@ -97,10 +81,6 @@ class siswaController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-        
         // Only admin can update students
         if (session('admin_role') !== 'admin') {
             return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk mengupdate siswa.');
@@ -119,10 +99,6 @@ class siswaController extends Controller
 
     public function destroy($id)
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-        
         // Only admin can delete students
         if (session('admin_role') !== 'admin') {
             return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menghapus siswa.');

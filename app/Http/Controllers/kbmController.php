@@ -15,10 +15,6 @@ class kbmController extends Controller
      */
     public function index()
     {
-        if (!session()->has('admin_id')) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-
         $userRole = session('admin_role');
         $adminId = session('admin_id');
         $username = session('admin_username');
