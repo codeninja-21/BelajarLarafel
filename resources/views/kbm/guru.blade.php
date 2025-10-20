@@ -2,21 +2,18 @@
 <html>
 <head>
     <title>Jadwal Mengajar Saya</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="mb-3">Jadwal Mengajar Saya</h2>
-        <div class="card mb-4">
-            <div class="card-body">
-                <p class="mb-1"><strong>Nama:</strong> {{ $guru->nama }}</p>
-                <p class="mb-1"><strong>Mata Pelajaran:</strong> {{ $guru->mapel }}</p>
-                <p class="mb-0"><strong>Role:</strong> Guru</p>
-            </div>
+    <div>
+        <h2>Jadwal Mengajar Saya</h2>
+        <div>
+            <p><strong>Nama:</strong> {{ $guru->nama }}</p>
+            <p><strong>Mata Pelajaran:</strong> {{ $guru->mapel }}</p>
+            <p><strong>Role:</strong> Guru</p>
         </div>
         
-        <table class="table table-bordered table-striped align-middle">
-            <thead class="table-success text-center">
+        <table border="1" cellpadding="8">
+            <thead>
                 <tr>
                     <th>No</th>
                     <th>Kelas</th>
@@ -28,7 +25,7 @@
             <tbody>
                 @forelse ($guru->kbm as $i => $jadwal)
                 <tr>
-                    <td class="text-center">{{ $i + 1 }}</td>
+                    <td>{{ $i + 1 }}</td>
                     <td>{{ $jadwal->walas->jenjang }} {{ $jadwal->walas->namakelas }}</td>
                     <td>{{ $jadwal->hari }}</td>
                     <td>{{ $jadwal->mulai }}</td>
@@ -36,13 +33,13 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center text-muted">Anda belum memiliki jadwal mengajar</td>
+                    <td colspan="5">Anda belum memiliki jadwal mengajar</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
         
-        <a href="{{ route('home') }}" class="btn btn-secondary">Kembali ke Home</a>
+        <a href="{{ route('home') }}"><button>Kembali ke Home</button></a>
     </div>
 </body>
 </html>

@@ -2,25 +2,22 @@
 <html>
 <head>
     <title>Jadwal Kelas Saya</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="mb-3">Jadwal Kelas Saya</h2>
-        <div class="card mb-4">
-            <div class="card-body">
-                <p class="mb-1"><strong>Nama:</strong> {{ $siswa->nama }}</p>
-                @if($siswa->kelas && $siswa->kelas->first())
-                    <p class="mb-1"><strong>Kelas:</strong> {{ $siswa->kelas->first()->walas->jenjang }} {{ $siswa->kelas->first()->walas->namakelas }}</p>
-                    <p class="mb-0"><strong>Wali Kelas:</strong> {{ $siswa->kelas->first()->walas->guru->nama ?? '-' }}</p>
-                @else
-                    <p class="mb-0 text-muted">Belum terdaftar di kelas manapun</p>
-                @endif
-            </div>
+    <div>
+        <h2>Jadwal Kelas Saya</h2>
+        <div>
+            <p><strong>Nama:</strong> {{ $siswa->nama }}</p>
+            @if($siswa->kelas && $siswa->kelas->first())
+                <p><strong>Kelas:</strong> {{ $siswa->kelas->first()->walas->jenjang }} {{ $siswa->kelas->first()->walas->namakelas }}</p>
+                <p><strong>Wali Kelas:</strong> {{ $siswa->kelas->first()->walas->guru->nama ?? '-' }}</p>
+            @else
+                <p>Belum terdaftar di kelas manapun</p>
+            @endif
         </div>
         
-        <table class="table table-bordered table-striped align-middle">
-            <thead class="table-info text-center">
+        <table border="1" cellpadding="8">
+            <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama Guru</th>
@@ -33,7 +30,7 @@
             <tbody>
                 @forelse ($jadwals as $i => $jadwal)
                 <tr>
-                    <td class="text-center">{{ $i + 1 }}</td>
+                    <td>{{ $i + 1 }}</td>
                     <td>{{ $jadwal->guru->nama }}</td>
                     <td>{{ $jadwal->guru->mapel }}</td>
                     <td>{{ $jadwal->hari }}</td>
@@ -42,13 +39,13 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted">Belum ada jadwal pelajaran untuk kelas Anda</td>
+                    <td colspan="6">Belum ada jadwal pelajaran untuk kelas Anda</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
         
-        <a href="{{ route('home') }}" class="btn btn-secondary">Kembali ke Home</a>
+        <a href="{{ route('home') }}"><button>Kembali ke Home</button></a>
     </div>
 </body>
 </html>

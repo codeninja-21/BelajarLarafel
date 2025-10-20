@@ -2,15 +2,14 @@
 <html>
 <head>
     <title>Jadwal KBM - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="mb-3">Daftar Jadwal Kegiatan Belajar Mengajar (KBM)</h2>
-        <p class="text-muted">Role: <strong>Admin</strong> | User: <strong>{{ $username }}</strong></p>
+    <div>
+        <h2>Daftar Jadwal Kegiatan Belajar Mengajar (KBM)</h2>
+        <p>Role: <strong>Admin</strong> | User: <strong>{{ $username }}</strong></p>
         
-        <table class="table table-bordered table-striped align-middle">
-            <thead class="table-primary text-center">
+        <table border="1" cellpadding="8">
+            <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama Guru</th>
@@ -24,7 +23,7 @@
             <tbody>
                 @forelse ($jadwals as $i => $jadwal)
                 <tr>
-                    <td class="text-center">{{ $i + 1 }}</td>
+                    <td>{{ $i + 1 }}</td>
                     <td>{{ $jadwal->guru->nama }}</td>
                     <td>{{ $jadwal->guru->mapel }}</td>
                     <td>{{ $jadwal->walas->jenjang }} {{ $jadwal->walas->namakelas }}</td>
@@ -34,13 +33,13 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted">Belum ada jadwal pelajaran</td>
+                    <td colspan="7">Belum ada jadwal pelajaran</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
         
-        <a href="{{ route('home') }}" class="btn btn-secondary">Kembali ke Home</a>
+        <a href="{{ route('home') }}"><button>Kembali ke Home</button></a>
     </div>
 </body>
 </html>
