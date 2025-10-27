@@ -6,7 +6,7 @@ use App\Models\Kelas;
 use App\Models\Walas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreKelasRequest;
 
 class KelasController extends Controller
 {
@@ -31,13 +31,8 @@ class KelasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreKelasRequest $request)
     {
-        $request->validate([
-            'idwalas' => 'required|exists:datawalas,idwalas',
-            'idsiswa' => 'required|exists:datasiswa,idsiswa|unique:datakelas,idsiswa',
-        ]);
-
         try {
             // Check if the student is already in a class
             $existingKelas = Kelas::where('idsiswa', $request->idsiswa)->first();
@@ -47,7 +42,7 @@ class KelasController extends Controller
                     ->withInput();
             }
 
-            Kelas::create($request->all());
+            Kelas::create($request->validated());
             
             return redirect()->route('walas.show', $request->idwalas)
                 ->with('success', 'Siswa berhasil ditambahkan ke kelas');
