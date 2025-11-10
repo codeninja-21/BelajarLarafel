@@ -44,9 +44,7 @@ class siswaController extends Controller
     public function create()
     {
         // Only admin can create students
-        if (session('admin_role') !== 'admin') {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menambah siswa.');
-        }
+        
         
         return view('siswa.create');
     }

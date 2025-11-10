@@ -44,6 +44,17 @@
             </div>
         </div>
         @endforeach
+    @endif
+    @isset($konten)
+        @foreach($konten as $k => $data)
+<a href="{{ url('/detil/' . $data->id) }}">
+<h1>{{ $data->id }} {{ $data->judul }}</h1>
+</a>
+<p>{{ $data->isi }}</p>
+<br>
+@endforeach
+    @endisset
+    @if($articles->count() > 0)
         <p><a href="{{ route('articles.index') }}">Lihat semua artikel →</a></p>
     @else
         <p>Belum ada artikel yang dipublikasikan.</p>
