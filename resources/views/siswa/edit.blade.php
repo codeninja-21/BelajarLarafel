@@ -21,7 +21,7 @@
 </head>
 <body>
 <h2>Edit Siswa</h2>
-<form method="POST" action="{{ route('siswa.update', $siswa->id) }}">
+<form method="POST" action="{{ route('siswa.update', $siswa->idsiswa) }}">
 @csrf
 <input type="text" name="nama" value="{{ $siswa->nama }}" required><br>
 <input type="number" name="tb" value="{{ $siswa->tb }}" required><br>

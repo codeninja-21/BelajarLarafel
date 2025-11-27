@@ -3,19 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Walas;
-use App\Models\Guru;
-use App\Models\Siswa;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreWalasRequest;
+use App\Http\Requests\UpdateWalasRequest;
+use App\Services\WalasService;
 
 class WalasController extends Controller
 {
+    protected $service;
+
+    public function __construct(WalasService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $walas = Walas::with(['guru', 'siswa'])->get();
+        $walas = $this->service->getAllWalas();
         return view('walas.index', compact('walas'));
     }
 
@@ -24,28 +29,17 @@ class WalasController extends Controller
      */
     public function create()
     {
-        // Get all gurus who are not yet walas
-        $gurus = Guru::whereNotIn('idguru', function($query) {
-            $query->select('idguru')->from('datawalas');
-        })->get();
-
+        $gurus = $this->service->getAvailableGurus();
         return view('walas.create', compact('gurus'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreWalasRequest $request)
     {
-        $request->validate([
-            'idguru' => 'required|exists:dataguru,idguru|unique:datawalas,idguru',
-            'jenjang' => 'required|in:X,XI,XII',
-            'namakelas' => 'required|string|max:10',
-            'tahunajaran' => 'required|string|max:9',
-        ]);
-
         try {
-            Walas::create($request->all());
+            $this->service->createWalas($request->validated());
             return redirect()->route('walas.index')
                 ->with('success', 'Wali kelas berhasil ditambahkan');
         } catch (\Exception $e) {
@@ -64,9 +58,7 @@ class WalasController extends Controller
         $walas = $wala->load(['guru', 'siswa']);
         
         // Get students who are not in any class
-        $availableSiswa = Siswa::whereNotIn('idsiswa', function($query) {
-            $query->select('idsiswa')->from('datakelas');
-        })->get();
+        $availableSiswa = $this->service->getAvailableSiswa();
 
         return view('walas.show', compact('walas', 'availableSiswa'));
     }
@@ -83,16 +75,10 @@ class WalasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Walas $wala)
+    public function update(UpdateWalasRequest $request, Walas $wala)
     {
-        $request->validate([
-            'jenjang' => 'required|in:X,XI,XII',
-            'namakelas' => 'required|string|max:10',
-            'tahunajaran' => 'required|string|max:9',
-        ]);
-
         try {
-            $wala->update($request->only(['jenjang', 'namakelas', 'tahunajaran']));
+            $this->service->updateWalas($wala, $request->validated());
             return redirect()->route('walas.index')
                 ->with('success', 'Data wali kelas berhasil diperbarui');
         } catch (\Exception $e) {
@@ -108,21 +94,10 @@ class WalasController extends Controller
     public function destroy(Walas $wala)
     {
         try {
-            // Start transaction to ensure data consistency
-            DB::beginTransaction();
-            
-            // First, delete related kelas records
-            $wala->kelas()->delete();
-            
-            // Then delete the walas
-            $wala->delete();
-            
-            DB::commit();
-            
+            $this->service->deleteWalas($wala);
             return redirect()->route('walas.index')
                 ->with('success', 'Wali kelas berhasil dihapus');
         } catch (\Exception $e) {
-            DB::rollBack();
             return redirect()->back()
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

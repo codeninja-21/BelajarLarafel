@@ -19,7 +19,7 @@ Route::post('/register', [adminController::class, 'prosesRegister'])->name('regi
 // Protected routes - require login
 Route::middleware(['ceklogin'])->group(function () {
     // Home
-    Route::get('/home', [siswaController::class, 'home'])->name('home');
+    Route::get('/home', [siswaController::class, 'home'])->name('home')->middleware('role:admin,guru,siswa');
     
     // Siswa routes
     Route::get('/siswa/create', [siswaController::class, 'create'])->name('siswa.create');
@@ -27,6 +27,10 @@ Route::middleware(['ceklogin'])->group(function () {
     Route::get('/siswa/{id}/edit', [siswaController::class, 'edit'])->name('siswa.edit');
     Route::post('/siswa/{id}/update', [siswaController::class, 'update'])->name('siswa.update');
     Route::get('/siswa/{id}/delete', [siswaController::class, 'destroy'])->name('siswa.delete');
+    
+    // AJAX routes for siswa
+    Route::get('/siswa/data', [siswaController::class, 'getData'])->name('siswa.data');
+    Route::get('/siswa/search', [siswaController::class, 'search'])->name('siswa.search');
     
     // Logout
     Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -42,4 +46,8 @@ Route::middleware(['ceklogin'])->group(function () {
     
     // KBM routes - role-based access
     Route::get('/kbm', [kbmController::class, 'index'])->name('kbm.index');
+    
+    // AJAX routes for KBM
+    Route::get('/kbm/data', [kbmController::class, 'getData'])->name('kbm.data');
+    Route::get('/kbm/search', [kbmController::class, 'search'])->name('kbm.search');
 });

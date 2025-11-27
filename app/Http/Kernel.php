@@ -48,5 +48,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'ceklogin' => \App\Http\Middleware\ceklogin::class, // tambahannya ada disini
+        'role' => \App\Http\Middleware\CheckRole::class,
     ];
 }
