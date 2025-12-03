@@ -21,13 +21,36 @@ class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'username' => 'required|string|max:50|unique:dataadmin,username',
             'nama' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'role' => 'required|string|in:admin,guru,siswa',
-            'tb' => 'nullable|numeric|min:30|max:250',
-            'bb' => 'nullable|numeric|min:10|max:200',
+        ];
+
+        // Validasi tambahan untuk guru
+        if ($this->input('role') === 'guru') {
+            $rules['mapel'] = 'required|string|max:100';
+        }
+
+        // Validasi tambahan untuk siswa
+        if ($this->input('role') === 'siswa') {
+            $rules['tb'] = 'required|numeric|min:30|max:250';
+            $rules['bb'] = 'required|numeric|min:10|max:200';
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Custom error messages
+     */
+    public function messages(): array
+    {
+        return [
+            'mapel.required' => 'Mata pelajaran wajib diisi untuk guru.',
+            'tb.required' => 'Tinggi badan wajib diisi untuk siswa.',
+            'bb.required' => 'Berat badan wajib diisi untuk siswa.',
         ];
     }
 }

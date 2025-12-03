@@ -35,14 +35,14 @@ class AuthRepository
             Guru::create([
                 'id' => $admin->id,
                 'nama' => $data['nama'],
-                'mapel' => 'Belum ditentukan' // Default value
+                'mapel' => $data['mapel']
             ]);
         } elseif ($data['role'] === 'siswa') {
             Siswa::create([
                 'id' => $admin->id,
                 'nama' => $data['nama'],
-                'tb' => $data['tb'] ?? 0,
-                'bb' => $data['bb'] ?? 0
+                'tb' => $data['tb'],
+                'bb' => $data['bb']
             ]);
         }
 

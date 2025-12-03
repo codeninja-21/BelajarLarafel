@@ -21,14 +21,16 @@ Route::middleware(['ceklogin'])->group(function () {
     // Home
     Route::get('/home', [siswaController::class, 'home'])->name('home')->middleware('role:admin,guru,siswa');
     
-    // Siswa routes
-    Route::get('/siswa/create', [siswaController::class, 'create'])->name('siswa.create');
-    Route::post('/siswa/store', [siswaController::class, 'store'])->name('siswa.store');
-    Route::get('/siswa/{id}/edit', [siswaController::class, 'edit'])->name('siswa.edit');
-    Route::post('/siswa/{id}/update', [siswaController::class, 'update'])->name('siswa.update');
-    Route::get('/siswa/{id}/delete', [siswaController::class, 'destroy'])->name('siswa.delete');
+    // Siswa routes - Admin only (create, edit, update, delete)
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/siswa/create', [siswaController::class, 'create'])->name('siswa.create');
+        Route::post('/siswa/store', [siswaController::class, 'store'])->name('siswa.store');
+        Route::get('/siswa/{id}/edit', [siswaController::class, 'edit'])->name('siswa.edit');
+        Route::post('/siswa/{id}/update', [siswaController::class, 'update'])->name('siswa.update');
+        Route::get('/siswa/{id}/delete', [siswaController::class, 'destroy'])->name('siswa.delete');
+    });
     
-    // AJAX routes for siswa
+    // AJAX routes for siswa - accessible by admin and guru (walas)
     Route::get('/siswa/data', [siswaController::class, 'getData'])->name('siswa.data');
     Route::get('/siswa/search', [siswaController::class, 'search'])->name('siswa.search');
     

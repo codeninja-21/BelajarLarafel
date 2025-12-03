@@ -92,52 +92,29 @@ class siswaController extends Controller
 
     public function create()
     {
-        // Only admin can create students
-        
-        
         return view('siswa.create');
     }
 
     public function store(StoreSiswaRequest $request)
     {
-        // Only admin can store students
-        if (session('admin_role') !== 'admin') {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menambah siswa.');
-        }
-        
         $this->service->createSiswa($request->validated());
         return redirect()->route('home')->with('success', 'Data siswa berhasil ditambahkan!');
     }
 
     public function edit($id)
     {
-        // Only admin can edit students
-        if (session('admin_role') !== 'admin') {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk mengedit siswa.');
-        }
-        
         $siswa = $this->service->getSiswaById($id);
         return view('siswa.edit', compact('siswa'));
     }
 
     public function update(UpdateSiswaRequest $request, $id)
     {
-        // Only admin can update students
-        if (session('admin_role') !== 'admin') {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk mengupdate siswa.');
-        }
-        
         $this->service->updateSiswa($id, $request->validated());
         return redirect()->route('home')->with('success', 'Data siswa berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        // Only admin can delete students
-        if (session('admin_role') !== 'admin') {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses untuk menghapus siswa.');
-        }
-        
         $this->service->deleteSiswa($id);
         return redirect()->route('home')->with('success', 'Data siswa berhasil dihapus.');
     }

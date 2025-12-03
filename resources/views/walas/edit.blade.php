@@ -23,31 +23,29 @@
                             <small class="form-text text-muted">Tidak dapat mengubah guru yang sudah menjadi wali kelas.</small>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="jenjang" class="form-label">Jenjang</label>
-                                <select class="form-select @error('jenjang') is-invalid @enderror" id="jenjang" name="jenjang" required>
-                                    <option value="X" {{ old('jenjang', $walas->jenjang) == 'X' ? 'selected' : '' }}>X</option>
-                                    <option value="XI" {{ old('jenjang', $walas->jenjang) == 'XI' ? 'selected' : '' }}>XI</option>
-                                    <option value="XII" {{ old('jenjang', $walas->jenjang) == 'XII' ? 'selected' : '' }}>XII</option>
-                                </select>
-                                @error('jenjang')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                        <div class="mb-3">
+                            <label for="jenjang" class="form-label">Jenjang</label>
+                            <select class="form-select @error('jenjang') is-invalid @enderror" id="jenjang" name="jenjang" required>
+                                <option value="X" {{ old('jenjang', $walas->jenjang) == 'X' ? 'selected' : '' }}>X</option>
+                                <option value="XI" {{ old('jenjang', $walas->jenjang) == 'XI' ? 'selected' : '' }}>XI</option>
+                                <option value="XII" {{ old('jenjang', $walas->jenjang) == 'XII' ? 'selected' : '' }}>XII</option>
+                            </select>
+                            @error('jenjang')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="namakelas" class="form-label">Nama Kelas</label>
-                                <input type="text" class="form-control @error('namakelas') is-invalid @enderror" 
-                                    id="namakelas" name="namakelas" value="{{ old('namakelas', $walas->namakelas) }}" required>
-                                @error('namakelas')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                        <div class="mb-3">
+                            <label for="namakelas" class="form-label">Nama Kelas</label>
+                            <input type="text" class="form-control @error('namakelas') is-invalid @enderror" 
+                                id="namakelas" name="namakelas" value="{{ old('namakelas', $walas->namakelas) }}" required>
+                            @error('namakelas')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
